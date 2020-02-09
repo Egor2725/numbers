@@ -1,7 +1,33 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
-
+from django.contrib.auth import authenticate, login
 from random import randint
+from django.contrib.auth.forms import UserCreationForm
+
+
+def signup(request):
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            email = form.cleaned_data.get('email')
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(email=email, password=raw_password)
+            login(request, user)
+            return redirect('/core/')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})
+
+
+def check_user(request):
+    user = request.user
+    if user.is_authenticated:
+        return show_number(request)
+    else:
+        return redirect('/login/')
 
 
 def find_prime_numbers():
@@ -23,5 +49,5 @@ def show_number(request):
     number = {
         'random_prime_number': random_number
     }
-    # return render(request, 'base.html', {'number': random_number})
+
     return JsonResponse({'random_prime_number': random_number})

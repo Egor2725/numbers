@@ -1,8 +1,8 @@
 from django.urls import path
 
-from .views import show_number
+from .views import check_user
 
 
 urlpatterns = [
-    path('', show_number, ),
+    path('', check_user),
 ]
