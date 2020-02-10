@@ -1,8 +1,8 @@
 from django.urls import path
 
-from .views import check_user
+from .views import show_number
 
 
 urlpatterns = [
-    path('', check_user),
+    path('number/', show_number, name='number')
 ]

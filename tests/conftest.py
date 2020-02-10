@@ -1,8 +1,5 @@
-import pytest
-from django.test.client import Client
+from pytest_django.plugin import _blocking_manager
+from django.db.backends.base.base import BaseDatabaseWrapper
 
-
-@pytest.fixture()
-def client():
-    client = Client()
-    return client
+_blocking_manager.unblock()
+_blocking_manager._blocking_wrapper = BaseDatabaseWrapper.ensure_connection
